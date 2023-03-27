@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.service.serviceinterface.KakaoService;
+import sejong.europlanner.vo.response.ResponseKakaoLogin;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,7 +14,7 @@ import java.net.URL;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
-    public String getKakaoAccessToken (String code) {
+    public ResponseKakaoLogin getKakaoAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -66,7 +67,11 @@ public class KakaoServiceImpl implements KakaoService {
             e.printStackTrace();
         }
 
-        return access_Token;
+        ResponseKakaoLogin responseKakaoLogin = new ResponseKakaoLogin();
+        responseKakaoLogin.setAccessToken(access_Token);
+        responseKakaoLogin.setRefreshToken(refresh_Token);
+
+        return responseKakaoLogin;
     }
 
     public HttpStatus kakaoLogout(String accessToken) {

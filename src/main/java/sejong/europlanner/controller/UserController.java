@@ -6,24 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import sejong.europlanner.service.serviceImpl.JwtTokenServiceImpl;
 import sejong.europlanner.dto.UserDto;
-import sejong.europlanner.service.UserService;
+import sejong.europlanner.service.serviceinterface.JwtTokenService;
+import sejong.europlanner.service.serviceinterface.UserService;
+import sejong.europlanner.vo.request.RequestLogin;
 import sejong.europlanner.vo.request.RequestUser;
+import sejong.europlanner.vo.response.ResponseLogin;
 import sejong.europlanner.vo.response.ResponseUser;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
+    private final JwtTokenService jwtTokenService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          JwtTokenServiceImpl jwtTokenService) {
         this.userService = userService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @PostMapping("/register")
@@ -43,5 +49,21 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(location).body(responseUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseLogin> loginUser(@RequestBody RequestLogin requestLogin) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        UserDto userDto = mapper.map(requestLogin, UserDto.class);
+
+        ResponseLogin responseLogin = userService.loginValidation(userDto);
+
+        String jwtToken = jwtTokenService.generateToken(requestLogin.getUsername());
+
+        responseLogin.setJwtToken(jwtToken);
+
+        return ResponseEntity.ok().body(responseLogin);
     }
 }

@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceImpl.KakaoServiceImpl;
+import sejong.europlanner.service.serviceinterface.KakaoService;
+import sejong.europlanner.vo.response.ResponseKakaoLogin;
 
 @RestController
 @RequestMapping("/kakao")
 public class KakaoController {
-    private final KakaoServiceImpl kakaoService;
+    private final KakaoService kakaoService;
 
     @Autowired
     public KakaoController(KakaoServiceImpl kakaoService) {
@@ -21,8 +23,10 @@ public class KakaoController {
      * [GET] /oauth/kakao/callback
      */
     @GetMapping("/login")
-    public void kakaoCallback(@RequestParam String code) {
-        String accessToken = kakaoService.getKakaoAccessToken(code);
+    public ResponseEntity<ResponseKakaoLogin> kakaoCallback(@RequestParam String code) {
+        ResponseKakaoLogin responseKakaoLogin = kakaoService.getKakaoAccessToken(code);
+
+        return ResponseEntity.ok().body(responseKakaoLogin);
     }
 
     @PostMapping("/logout")

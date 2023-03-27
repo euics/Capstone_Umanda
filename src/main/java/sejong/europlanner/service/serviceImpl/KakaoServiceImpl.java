@@ -5,13 +5,14 @@ import com.google.gson.JsonParser;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import sejong.europlanner.service.serviceinterface.KakaoService;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
-public class KakaoService {
+public class KakaoServiceImpl implements KakaoService {
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";

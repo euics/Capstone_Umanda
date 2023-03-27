@@ -10,5 +10,5 @@ public class ResponseLogin {
 
     private String username;
 
-    private String name;
+    private String jwtToken;
 }

@@ -2,7 +2,7 @@
 FROM openjdk:18-jdk
 
 #컨테이너 안에 jar 파일은 app.jar 될꺼임
-COPY build/libs/euro-planner-0.0.1-SNAPSHOT app.jar
+COPY build/libs/euro-planner-0.0.1-SNAPSHOT.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
  

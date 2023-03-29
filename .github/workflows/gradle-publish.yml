@@ -34,7 +34,7 @@ jobs:
     - name: build and release to DockerHub
       env:
         NAME: euics # 계정 명
-        REPO: europlanner # 레포 이름
+        REPO: euro-planner # 레포 이름
       run: |
         docker build -t $REPO .
         docker tag $REPO:latest $NAME/$REPO:latest

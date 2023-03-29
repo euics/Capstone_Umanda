@@ -5,3 +5,4 @@ FROM openjdk:18-jdk
 COPY build/libs/euro-planner-0.0.1-SNAPSHOT app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+ 

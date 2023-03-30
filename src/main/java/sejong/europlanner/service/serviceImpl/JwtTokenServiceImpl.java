@@ -5,11 +5,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.service.serviceinterface.JwtTokenService;
 
 import java.util.Date;
 
 @Service
+@Transactional
 public class JwtTokenServiceImpl implements JwtTokenService {
 
     @Value("${jwt.secret}")

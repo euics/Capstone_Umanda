@@ -33,7 +33,7 @@ public class KakaoController {
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String accessToken) {
         try {
             HttpStatus status = kakaoService.kakaoLogout(accessToken);
-            return new ResponseEntity<>("Logout successful", status);
+            return new ResponseEntity<>("로그아웃 성공", status);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

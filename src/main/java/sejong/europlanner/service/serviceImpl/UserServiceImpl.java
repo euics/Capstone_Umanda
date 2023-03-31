@@ -46,9 +46,8 @@ public class UserServiceImpl implements UserService {
         if (savedUser != null)
             throw new IllegalStateException("이미 존재하는 회원입니다.");
 
-        userRepository.save(createUser(userDto));
-
-        return new ModelMapper().map(userDto, ResponseUser.class);
+        UserEntity newUser = userRepository.save(createUser(userDto));
+        return new ModelMapper().map(newUser, ResponseUser.class);
     }
 
     @Override
@@ -61,6 +60,6 @@ public class UserServiceImpl implements UserService {
         if(!passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword()))
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
 
-        return new ModelMapper().map(userDto, ResponseLogin.class);
+        return new ModelMapper().map(savedUser, ResponseLogin.class);
     }
 }

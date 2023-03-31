@@ -12,7 +12,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/swagger.ui/**", "/login/**")
+                .antMatchers("/h2-console/**", "/swagger.ui/**", "/login/**", "/register/**")
                 .permitAll();
 
         http.csrf().disable();

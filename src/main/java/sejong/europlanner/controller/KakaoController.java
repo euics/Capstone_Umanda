@@ -28,8 +28,7 @@ public class KakaoController {
      * [GET] /oauth/kakao/callback
      */
     @GetMapping("/login")
-    public ResponseEntity<ResponseKakaoLogin> kakaoCallback(@RequestParam String code,
-                                                            HttpSession httpSession) {
+    public ResponseEntity<ResponseKakaoLogin> kakaoCallback(@RequestParam String code) {
         ResponseKakaoLogin responseKakaoLogin = kakaoService.getKakaoAccessToken(code);
 
         return ResponseEntity.ok().body(responseKakaoLogin);
@@ -44,11 +43,8 @@ public class KakaoController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String accessToken) {
-        try {
-            HttpStatus status = kakaoService.kakaoLogout(accessToken);
-            return new ResponseEntity<>("로그아웃 성공", status);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        kakaoService.kakaoLogout(accessToken);
+
+        return ResponseEntity.ok().body("로그아웃 성공");
     }
 }

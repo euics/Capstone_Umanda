@@ -8,7 +8,7 @@ import java.util.HashMap;
 public interface KakaoService {
     ResponseKakaoLogin getKakaoAccessToken (String code);
 
-    HttpStatus kakaoLogout(String accessToken);
+    void kakaoLogout(String accessToken);
 
     HashMap<String, Object> getUserInfo (String access_Token);
 }

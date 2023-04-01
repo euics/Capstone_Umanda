@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sejong.europlanner.service.serviceImpl.JwtTokenServiceImpl;
+import sejong.europlanner.Component.JwtTokenProvider;
 import sejong.europlanner.dto.UserDto;
-import sejong.europlanner.service.serviceinterface.JwtTokenService;
 import sejong.europlanner.service.serviceinterface.UserService;
 import sejong.europlanner.vo.request.RequestLogin;
 import sejong.europlanner.vo.request.RequestUser;
@@ -23,13 +22,13 @@ import java.net.URI;
 public class UserController {
     private final UserService userService;
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserController(UserService userService,
-                          JwtTokenServiceImpl jwtTokenService) {
+                          JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
-        this.jwtTokenService = jwtTokenService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
@@ -60,7 +59,7 @@ public class UserController {
 
         ResponseLogin responseLogin = userService.loginValidation(userDto);
 
-        String jwtToken = jwtTokenService.generateToken(requestLogin.getUsername());
+        String jwtToken = jwtTokenProvider.generateToken(requestLogin.getUsername());
 
         responseLogin.setJwtToken(jwtToken);
 

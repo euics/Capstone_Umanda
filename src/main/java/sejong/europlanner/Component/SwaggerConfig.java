@@ -1,4 +1,4 @@
-package sejong.europlanner.config;
+package sejong.europlanner.Component;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

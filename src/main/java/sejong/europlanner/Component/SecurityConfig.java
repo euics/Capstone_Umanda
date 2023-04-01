@@ -1,4 +1,4 @@
-package sejong.europlanner.config;
+package sejong.europlanner.Component;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +13,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/h2-console/**", "/swagger.ui/**", "/login/**", "/register/**")
-                .permitAll();
+                .permitAll()
+                .and()
+                .oauth2Login();
 
         http.csrf().disable();
 

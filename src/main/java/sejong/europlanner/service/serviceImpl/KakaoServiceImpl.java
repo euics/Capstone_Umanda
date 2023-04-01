@@ -123,20 +123,29 @@ public class KakaoServiceImpl implements KakaoService {
     }
 
 
-    public HttpStatus kakaoLogout(String accessToken) {
-        String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-
-        HttpEntity<String> request = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
-
+    public void kakaoLogout(String accessToken) {
+        String reqURL = "https://kapi.kakao.com/v1/user/logout";
         try {
-            ResponseEntity<String> response = restTemplate.exchange(KAKAO_LOGOUT_URL, HttpMethod.POST, request, String.class);
-            return response.getStatusCode();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to logout from Kakao: " + e.getMessage());
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String result = "";
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println(result);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

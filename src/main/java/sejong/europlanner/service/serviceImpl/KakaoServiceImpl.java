@@ -2,13 +2,16 @@ package sejong.europlanner.service.serviceImpl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.service.serviceinterface.KakaoService;
+import sejong.europlanner.vo.response.ResponseKakaoUser;
 
 import java.io.*;
 import java.util.Collections;
@@ -22,6 +25,13 @@ public class KakaoServiceImpl implements KakaoService {
 
     @Value("${kakao.redirect.uri}")
     private String redirectUri;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public KakaoServiceImpl(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public String getAccessToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
@@ -117,5 +127,27 @@ public class KakaoServiceImpl implements KakaoService {
                 request,
                 String.class
         );
+    }
+
+
+    public ResponseKakaoUser toResponse(JsonNode userProfile){
+        JsonNode kakaoAccountNode = userProfile.get("kakao_account");
+        JsonNode profileNode = kakaoAccountNode.get("profile");
+
+        String profileNickname = profileNode.get("nickname").asText();
+        String profileImageUrl = profileNode.get("profile_image_url").asText();
+
+        ResponseKakaoUser responseKakaoUser = new ResponseKakaoUser();
+        responseKakaoUser.setName(profileNickname);
+        responseKakaoUser.setProfile(profileImageUrl);
+
+        return responseKakaoUser;
+    }
+
+    public ResponseKakaoUser setToken(ResponseKakaoUser responseKakaoUser){
+        String jwtToken = jwtTokenProvider.generateToken(responseKakaoUser.getName());
+        responseKakaoUser.setJwtToken(jwtToken);
+
+        return responseKakaoUser;
     }
 }

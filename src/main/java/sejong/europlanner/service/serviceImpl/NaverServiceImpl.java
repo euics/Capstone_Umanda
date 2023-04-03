@@ -2,6 +2,7 @@ package sejong.europlanner.service.serviceImpl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.service.serviceinterface.NaverService;
+import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -27,6 +30,13 @@ public class NaverServiceImpl implements NaverService {
 
     @Value("${naver.redirect.uri}")
     private String redirectUri;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public NaverServiceImpl(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public String getAccessToken(String code, String state) {
         RestTemplate restTemplate = new RestTemplate();
@@ -139,5 +149,31 @@ public class NaverServiceImpl implements NaverService {
         );
 
         return objectMapper.readTree(userInfoResponse.getBody());
+    }
+
+    public ResponseNaverUser toResponse(JsonNode userProfile){
+        JsonNode responseNode = userProfile.get("response");
+
+        String nickname = responseNode.get("nickname").asText();
+        String gender = responseNode.get("gender").asText();
+        String name = responseNode.get("name").asText();
+        String birthYear = responseNode.get("birthyear").asText();
+        String profileImage = responseNode.get("profile_image").asText();
+
+        ResponseNaverUser responseNaverUser = new ResponseNaverUser();
+        responseNaverUser.setName(name);
+        responseNaverUser.setName(nickname);
+        responseNaverUser.setGender(gender);
+        responseNaverUser.setBirthyear(birthYear);
+        responseNaverUser.setProfile(profileImage);
+
+        return responseNaverUser;
+    }
+
+    public ResponseNaverUser setToken(ResponseNaverUser responseNaverUser){
+        String jwtToken = jwtTokenProvider.generateToken(responseNaverUser.getName());
+        responseNaverUser.setJwtToken(jwtToken);
+
+        return responseNaverUser;
     }
 }

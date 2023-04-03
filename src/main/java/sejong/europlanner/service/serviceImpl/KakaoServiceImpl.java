@@ -1,151 +1,90 @@
 package sejong.europlanner.service.serviceImpl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.service.serviceinterface.KakaoService;
-import sejong.europlanner.vo.response.ResponseKakaoLogin;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
+import java.util.Collections;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
-    public ResponseKakaoLogin getKakaoAccessToken (String code) {
-        String access_Token = "";
-        String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
 
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    public ResponseEntity<String> logout(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
 
-            //POST 요청을 위해 기본값이 false인 setDoOutput을 true로
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
 
-            //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=f7db335e160a0711caa399186a502461"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:7070/kakao/login"); // TODO 인가코드 받은 redirect_uri 입력
-            sb.append("&code=" + code);
-            bw.write(sb.toString());
-            bw.flush();
+        HttpEntity<String> request = new HttpEntity<>(headers);
 
-            //결과 코드가 200이라면 성공
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-
-            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            String result = "";
-
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println("response body : " + result);
-
-            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
-
-            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-
-            System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
-
-            br.close();
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ResponseKakaoLogin responseKakaoLogin = new ResponseKakaoLogin();
-        responseKakaoLogin.setAccessToken(access_Token);
-        responseKakaoLogin.setRefreshToken(refresh_Token);
-
-        return responseKakaoLogin;
+        return restTemplate.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
     }
 
-    public HashMap<String, Object> getUserInfo (String access_Token) {
+    @Value("${kakao.client.id}")
+    private String clientId;
 
-        //    요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
-        HashMap<String, Object> userInfo = new HashMap<>();
-        String reqURL = "https://kapi.kakao.com/v2/user/me";
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+    @Value("${kakao.redirect.uri}")
+    private String redirectUri;
 
-            //    요청에 필요한 Header에 포함될 내용
-            conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+    public String getAccessToken(String code) {
+        RestTemplate restTemplate = new RestTemplate();
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clientId);
+        params.add("redirect_uri", redirectUri);
+        params.add("code", code);
 
-            String line = "";
-            String result = "";
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println("response body : " + result);
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://kauth.kakao.com/oauth/token",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
 
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
-
-            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String image = properties.getAsJsonObject().get("profile_image").getAsString();
-
-            userInfo.put("nickname", nickname);
-            userInfo.put("image", image);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return userInfo;
+        // 여기에서 JSON 응답을 구문 분석하여 액세스 토큰을 추출하십시오.
+        // 예를 들어, Jackson 라이브러리를 사용하여 구문 분석할 수 있습니다.
+        // 이 예에서는 응답 문자열을 반환합니다.
+        return response.getBody();
     }
 
+    public JsonNode getUserProfile(String accessToken) throws IOException {
+        RestTemplate restTemplate = new RestTemplate();
 
-    public void kakaoLogout(String accessToken) {
-        String reqURL = "https://kapi.kakao.com/v1/user/logout";
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("Authorization", "Bearer " + accessToken);
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+        HttpEntity<String> request = new HttpEntity<>("parameters", headers);
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.GET,
+                request,
+                String.class
+        );
 
-            String result = "";
-            String line = "";
-
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println(result);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // 응답 JSON 문자열을 JsonNode 객체로 변환합니다.
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readTree(response.getBody());
     }
 }

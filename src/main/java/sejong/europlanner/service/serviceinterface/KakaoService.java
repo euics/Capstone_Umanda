@@ -1,14 +1,15 @@
 package sejong.europlanner.service.serviceinterface;
 
-import org.springframework.http.HttpStatus;
-import sejong.europlanner.vo.response.ResponseKakaoLogin;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
+import java.io.IOException;
 
 public interface KakaoService {
-    ResponseKakaoLogin getKakaoAccessToken (String code);
 
-    void kakaoLogout(String accessToken);
+    String getAccessToken(String code);
 
-    HashMap<String, Object> getUserInfo (String access_Token);
+    JsonNode getUserProfile(String accessToken) throws IOException;
+
+    ResponseEntity<String> logout(String accessToken);
 }

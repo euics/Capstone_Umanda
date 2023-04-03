@@ -2,6 +2,7 @@ package sejong.europlanner.service.serviceinterface;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.ResponseEntity;
+import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 
@@ -13,4 +14,8 @@ public interface NaverService {
     ResponseEntity<String> logout(String accessToken);
 
     JsonNode getUserFromCode(String code) throws Exception;
+
+    ResponseNaverUser toResponse(JsonNode userProfile);
+
+    ResponseNaverUser setToken(ResponseNaverUser responseNaverUser);
 }

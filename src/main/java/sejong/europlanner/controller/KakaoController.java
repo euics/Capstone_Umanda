@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceImpl.KakaoServiceImpl;
 import sejong.europlanner.service.serviceinterface.KakaoService;
+import sejong.europlanner.vo.response.ResponseKakaoUser;
+import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 
@@ -27,23 +29,17 @@ public class KakaoController {
      * [GET] /oauth/kakao/callback
      */
     @GetMapping("/login")
-    public String kakaoCallback(@RequestParam String code) throws Exception {
+    public ResponseEntity<ResponseKakaoUser> kakaoCallback(@RequestParam String code) throws Exception {
+        JsonNode userProfile = kakaoService.getUserFromCode(code);
+        ResponseKakaoUser responseKakaoUser = kakaoService.setToken(kakaoService.toResponse(userProfile));
+
+        return ResponseEntity.ok().body(responseKakaoUser);
+    }
+
+    @GetMapping("/user")
+    public String kakaoGetUser(@RequestParam String code) throws Exception {
         JsonNode userProfile = kakaoService.getUserFromCode(code);
 
         return userProfile.toString();
-    }
-
-    @PostMapping("/user")
-    public String kakaoGetUser(@RequestHeader("Authorization") String accessToken) throws IOException {
-        JsonNode userProfile = kakaoService.getUserProfile(accessToken);
-
-        return userProfile.toString();
-    }
-
-    @PostMapping("/logout")
-    public HttpStatus kakaoLogout(@RequestHeader("Authorization") String accessToken) {
-        ResponseEntity<String> response = kakaoService.logout(accessToken);
-
-        return response.getStatusCode();
     }
 }

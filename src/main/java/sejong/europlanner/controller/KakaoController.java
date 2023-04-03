@@ -3,13 +3,11 @@ package sejong.europlanner.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceImpl.KakaoServiceImpl;
 import sejong.europlanner.service.serviceinterface.KakaoService;
 import sejong.europlanner.vo.response.ResponseKakaoUser;
-import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 

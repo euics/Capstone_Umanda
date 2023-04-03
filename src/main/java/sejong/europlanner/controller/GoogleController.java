@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.europlanner.service.serviceinterface.GoogleService;
 import sejong.europlanner.vo.response.ResponseGoogleUser;
-import sejong.europlanner.vo.response.ResponseKakaoUser;
 
 @RestController
 @RequestMapping("/google")

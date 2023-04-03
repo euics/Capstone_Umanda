@@ -3,7 +3,6 @@ package sejong.europlanner.service.serviceinterface;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.ResponseEntity;
 import sejong.europlanner.vo.response.ResponseKakaoUser;
-import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 

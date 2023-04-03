@@ -2,7 +2,6 @@ package sejong.europlanner.vo.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

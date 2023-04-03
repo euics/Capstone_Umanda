@@ -1,5 +1,6 @@
 package sejong.europlanner.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceImpl.KakaoServiceImpl;
 import sejong.europlanner.service.serviceinterface.KakaoService;
-import sejong.europlanner.vo.response.ResponseKakaoLogin;
 
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/kakao")
@@ -28,23 +27,22 @@ public class KakaoController {
      * [GET] /oauth/kakao/callback
      */
     @GetMapping("/login")
-    public ResponseEntity<ResponseKakaoLogin> kakaoCallback(@RequestParam String code) {
-        ResponseKakaoLogin responseKakaoLogin = kakaoService.getKakaoAccessToken(code);
+    public String kakaoCallback(@RequestParam String code) {
 
-        return ResponseEntity.ok().body(responseKakaoLogin);
+        return kakaoService.getAccessToken(code);
     }
 
     @PostMapping("/user")
-    public ResponseEntity<HashMap<String, Object >> kakaoUser(@RequestHeader("Authorization") String accessToken){
-        HashMap<String, Object> userInfo = kakaoService.getUserInfo(accessToken);
+    public String kakaoGetUser(@RequestHeader("Authorization") String accessToken) throws IOException {
+        JsonNode userProfile = kakaoService.getUserProfile(accessToken);
 
-        return ResponseEntity.ok().body(userInfo);
+        return userProfile.toString();
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String accessToken) {
-        kakaoService.kakaoLogout(accessToken);
+    public HttpStatus kakaoLogout(@RequestHeader("Authorization") String accessToken) {
+        ResponseEntity<String> response = kakaoService.logout(accessToken);
 
-        return ResponseEntity.ok().body("로그아웃 성공");
+        return response.getStatusCode();
     }
 }

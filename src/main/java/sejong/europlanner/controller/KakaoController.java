@@ -27,9 +27,10 @@ public class KakaoController {
      * [GET] /oauth/kakao/callback
      */
     @GetMapping("/login")
-    public String kakaoCallback(@RequestParam String code) {
+    public String kakaoCallback(@RequestParam String code) throws Exception {
+        JsonNode userProfile = kakaoService.getUserFromCode(code);
 
-        return kakaoService.getAccessToken(code);
+        return userProfile.toString();
     }
 
     @PostMapping("/user")

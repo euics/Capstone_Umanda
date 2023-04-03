@@ -24,10 +24,11 @@ public class NaverController {
         this.naverService = naverService;
     }
 
+    @GetMapping("/login")
+    public String naverCallback(@RequestParam String code) throws Exception {
+        JsonNode userProfile = naverService.getUserFromCode(code);
 
-    @PostMapping("/login")
-    public String naverCallback(@RequestParam("code") String code, @RequestParam("state") String state) {
-        return naverService.getAccessToken(code, state);
+        return userProfile.toString();
     }
 
     @PostMapping("/user")

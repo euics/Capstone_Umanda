@@ -16,21 +16,6 @@ import java.util.Collections;
 @Service
 public class KakaoServiceImpl implements KakaoService {
 
-    public ResponseEntity<String> logout(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-
-        HttpEntity<String> request = new HttpEntity<>(headers);
-
-        return restTemplate.exchange(
-                "https://kapi.kakao.com/v1/user/logout",
-                HttpMethod.POST,
-                request,
-                String.class
-        );
-    }
 
     @Value("${kakao.client.id}")
     private String clientId;
@@ -86,5 +71,21 @@ public class KakaoServiceImpl implements KakaoService {
         // 응답 JSON 문자열을 JsonNode 객체로 변환합니다.
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readTree(response.getBody());
+    }
+
+    public ResponseEntity<String> logout(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
     }
 }

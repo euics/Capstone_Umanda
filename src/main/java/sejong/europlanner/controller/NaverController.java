@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.service.serviceinterface.NaverService;
+import sejong.europlanner.vo.response.ResponseNaverUser;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -25,22 +26,17 @@ public class NaverController {
     }
 
     @GetMapping("/login")
-    public String naverCallback(@RequestParam String code) throws Exception {
+    public ResponseEntity<ResponseNaverUser> naverCallback(@RequestParam String code) throws Exception {
         JsonNode userProfile = naverService.getUserFromCode(code);
+        ResponseNaverUser responseNaverUser = naverService.setToken(naverService.toResponse(userProfile));
 
-        return userProfile.toString();
+        return ResponseEntity.ok().body(responseNaverUser);
     }
 
-    @PostMapping("/user")
-    public String naverGetUser(@RequestHeader("Authorization") String accessToken) throws IOException {
-        JsonNode userProfile = naverService.getUserProfile(accessToken);
+    @GetMapping("/user")
+    public String naverGetUser(@RequestParam String code) throws IOException {
+        JsonNode userProfile = naverService.getUserProfile(code);
+
         return userProfile.toString();
-    }
-
-    @PostMapping("/logout")
-    public HttpStatus naverLogout(@RequestHeader("Authorization") String accessToken) {
-        ResponseEntity<String> response = naverService.logout(accessToken);
-
-        return response.getStatusCode();
     }
 }

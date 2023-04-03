@@ -1,4 +1,4 @@
-package sejong.europlanner.Component;
+package sejong.europlanner.component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

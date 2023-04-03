@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sejong.europlanner.Component.JwtTokenProvider;
+import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.dto.UserDto;
 import sejong.europlanner.service.serviceinterface.UserService;
 import sejong.europlanner.vo.request.RequestLogin;

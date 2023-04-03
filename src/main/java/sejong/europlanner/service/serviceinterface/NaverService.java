@@ -11,4 +11,6 @@ public interface NaverService {
     JsonNode getUserProfile(String accessToken) throws IOException;
 
     ResponseEntity<String> logout(String accessToken);
+
+    JsonNode getUserFromCode(String code) throws Exception;
 }

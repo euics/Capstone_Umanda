@@ -30,3 +30,23 @@ server:
 jwt:
   secret: YOUR_SECRET_KEY
   expiration: 7200000 # 토큰이 만료되기까지의 시간 (밀리초 단위, 여기서는 2시간)
+
+google:
+  client:
+    id: 74162317259-6pvbl6taro72s16tuldct2r906vfma04.apps.googleusercontent.com
+    secret: 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
+  redirect:
+    uri: http://localhost:7070/google/login
+
+naver:
+  client:
+    id: QZ4Tt1rkD62cvojsp35E
+    secret: eA0mRGjoez
+  redirect:
+    uri: http://localhost:7070/naver/login
+
+kakao:
+  client:
+    id: f7db335e160a0711caa399186a502461
+  redirect:
+    uri: http://localhost:7070/kakao/login

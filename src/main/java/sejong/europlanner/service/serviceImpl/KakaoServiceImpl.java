@@ -73,6 +73,36 @@ public class KakaoServiceImpl implements KakaoService {
         return objectMapper.readTree(response.getBody());
     }
 
+    public JsonNode getUserFromCode(String code) throws Exception{
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 액세스 토큰 요청
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id="
+                        + clientId + "&redirect_uri="
+                        + redirectUri + "&code=" + code,
+                null,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode accessTokenNode = objectMapper.readTree(response.getBody());
+
+        // 사용자 프로필 정보 요청
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessTokenNode.get("access_token").asText());
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        ResponseEntity<String> userInfoResponse = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.GET,
+                request,
+                String.class
+        );
+
+        return objectMapper.readTree(userInfoResponse.getBody());
+    }
+
     public ResponseEntity<String> logout(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 

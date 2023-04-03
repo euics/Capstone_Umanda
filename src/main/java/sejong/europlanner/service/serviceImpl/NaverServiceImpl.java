@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.service.serviceinterface.NaverService;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 
 @Service
@@ -97,5 +98,46 @@ public class NaverServiceImpl implements NaverService {
                 request,
                 String.class
         );
+    }
+
+    public JsonNode getUserFromCode(String code) throws Exception{
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 액세스 토큰 요청
+        HttpHeaders tokenRequestHeaders = new HttpHeaders();
+        tokenRequestHeaders.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes()));
+        tokenRequestHeaders.set("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+        MultiValueMap<String, String> tokenRequestBody = new LinkedMultiValueMap<>();
+        tokenRequestBody.add("grant_type", "authorization_code");
+        tokenRequestBody.add("client_id", clientId);
+        tokenRequestBody.add("client_secret", clientSecret);
+        tokenRequestBody.add("redirect_uri", redirectUri);
+        tokenRequestBody.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenRequestBody, tokenRequestHeaders);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "https://nid.naver.com/oauth2.0/token",
+                tokenRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode accessTokenNode = objectMapper.readTree(response.getBody());
+
+        // 사용자 프로필 정보 요청
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessTokenNode.get("access_token").asText());
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        ResponseEntity<String> userInfoResponse = restTemplate.exchange(
+                "https://openapi.naver.com/v1/nid/me",
+                HttpMethod.GET,
+                request,
+                String.class
+        );
+
+        return objectMapper.readTree(userInfoResponse.getBody());
     }
 }

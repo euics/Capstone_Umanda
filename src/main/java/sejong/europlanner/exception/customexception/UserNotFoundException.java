@@ -1,4 +1,4 @@
-package sejong.europlanner.exception;
+package sejong.europlanner.exception.customexception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

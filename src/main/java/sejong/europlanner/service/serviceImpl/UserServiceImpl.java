@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.dto.UserDto;
 import sejong.europlanner.entity.UserEntity;
-import sejong.europlanner.exception.BadRequestException;
-import sejong.europlanner.exception.UserNotFoundException;
+import sejong.europlanner.exception.customexception.BadRequestException;
+import sejong.europlanner.exception.customexception.UserNotFoundException;
+import sejong.europlanner.exception.customexception.UsernameExistException;
 import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.UserService;
 import sejong.europlanner.vo.response.ResponseLogin;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity savedUser = userRepository.findByUsername(userDto.getUsername());
         if (savedUser != null)
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new UsernameExistException("이미 존재하는 회원입니다.");
 
         UserEntity newUser = userRepository.save(createUser(userDto));
         return new ModelMapper().map(newUser, ResponseUser.class);

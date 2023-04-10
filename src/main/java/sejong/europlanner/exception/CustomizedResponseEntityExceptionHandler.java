@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import sejong.europlanner.exception.customexception.BadRequestException;
 import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.exception.customexception.UsernameExistException;
+import sejong.europlanner.vo.response.exception.ExceptionResponse;
 
 import java.util.Date;
 

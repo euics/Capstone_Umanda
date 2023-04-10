@@ -1,4 +1,4 @@
-package sejong.europlanner.exception;
+package sejong.europlanner.vo.response.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

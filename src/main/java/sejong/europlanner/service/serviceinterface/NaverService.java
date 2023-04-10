@@ -2,7 +2,7 @@ package sejong.europlanner.service.serviceinterface;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.ResponseEntity;
-import sejong.europlanner.vo.response.ResponseNaverUser;
+import sejong.europlanner.vo.response.user.ResponseNaverUser;
 
 import java.io.IOException;
 

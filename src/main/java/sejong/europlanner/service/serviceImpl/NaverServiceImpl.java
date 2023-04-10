@@ -12,7 +12,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.service.serviceinterface.NaverService;
-import sejong.europlanner.vo.response.ResponseNaverUser;
+import sejong.europlanner.vo.response.user.ResponseNaverUser;
 
 import java.io.IOException;
 import java.util.Base64;

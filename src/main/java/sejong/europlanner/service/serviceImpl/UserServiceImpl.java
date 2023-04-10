@@ -12,8 +12,8 @@ import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.exception.customexception.UsernameExistException;
 import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.UserService;
-import sejong.europlanner.vo.response.ResponseLogin;
-import sejong.europlanner.vo.response.ResponseUser;
+import sejong.europlanner.vo.response.user.ResponseLogin;
+import sejong.europlanner.vo.response.user.ResponseUser;
 
 @Service
 @Transactional

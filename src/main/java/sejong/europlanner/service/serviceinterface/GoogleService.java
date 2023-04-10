@@ -1,7 +1,7 @@
 package sejong.europlanner.service.serviceinterface;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import sejong.europlanner.vo.response.ResponseGoogleUser;
+import sejong.europlanner.vo.response.user.ResponseGoogleUser;
 
 public interface GoogleService {
     JsonNode getUserFromCode(String code) throws Exception;

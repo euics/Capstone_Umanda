@@ -7,9 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceImpl.KakaoServiceImpl;
 import sejong.europlanner.service.serviceinterface.KakaoService;
-import sejong.europlanner.vo.response.ResponseKakaoUser;
-
-import java.io.IOException;
+import sejong.europlanner.vo.response.user.ResponseKakaoUser;
 
 @RestController
 @RequestMapping("/kakao")

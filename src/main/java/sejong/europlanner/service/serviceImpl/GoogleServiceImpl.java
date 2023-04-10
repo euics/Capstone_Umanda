@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.service.serviceinterface.GoogleService;
-import sejong.europlanner.vo.response.ResponseGoogleUser;
+import sejong.europlanner.vo.response.user.ResponseGoogleUser;
 
 import javax.transaction.Transactional;
 

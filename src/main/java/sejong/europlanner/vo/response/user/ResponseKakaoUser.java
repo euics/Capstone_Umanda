@@ -1,16 +1,12 @@
-package sejong.europlanner.vo.response;
+package sejong.europlanner.vo.response.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseNaverUser {
+public class ResponseKakaoUser {
     private String name;
-
-    private String gender;
-
-    private String birthyear;
 
     private String profile;
 

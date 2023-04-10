@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.service.serviceinterface.NaverService;
-import sejong.europlanner.vo.response.ResponseNaverUser;
+import sejong.europlanner.vo.response.user.ResponseNaverUser;
 
 import java.io.IOException;
 

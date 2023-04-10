@@ -11,10 +11,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.dto.UserDto;
 import sejong.europlanner.service.serviceinterface.UserService;
-import sejong.europlanner.vo.request.RequestLogin;
-import sejong.europlanner.vo.request.RequestUser;
-import sejong.europlanner.vo.response.ResponseLogin;
-import sejong.europlanner.vo.response.ResponseUser;
+import sejong.europlanner.vo.request.user.RequestLogin;
+import sejong.europlanner.vo.request.user.RequestUser;
+import sejong.europlanner.vo.response.user.ResponseLogin;
+import sejong.europlanner.vo.response.user.ResponseUser;
 
 import java.net.URI;
 

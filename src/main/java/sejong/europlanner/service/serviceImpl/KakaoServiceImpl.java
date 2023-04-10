@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.component.JwtTokenProvider;
 import sejong.europlanner.service.serviceinterface.KakaoService;
-import sejong.europlanner.vo.response.ResponseKakaoUser;
+import sejong.europlanner.vo.response.user.ResponseKakaoUser;
 
 import java.io.*;
 import java.util.Collections;

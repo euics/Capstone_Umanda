@@ -1,4 +1,4 @@
-package sejong.europlanner.vo.request;
+package sejong.europlanner.vo.request.user;
 
 import lombok.Data;
 import sejong.europlanner.enumtype.Gender;

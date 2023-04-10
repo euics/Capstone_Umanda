@@ -12,7 +12,7 @@ import sejong.europlanner.vo.response.ResponseKakaoUser;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/ec2-15-165-158-135.ap-northeast-2.compute.amazonaws.com:8080")
+@RequestMapping("/ec2-43-201-98-213.ap-northeast-2.compute.amazonaws.com:7070")
 @Slf4j
 public class KakaoController {
     private final KakaoService kakaoService;

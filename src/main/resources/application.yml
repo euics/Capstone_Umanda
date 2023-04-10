@@ -49,4 +49,4 @@ kakao:
   client:
     id: f7db335e160a0711caa399186a502461
   redirect:
-    uri: http://localhost:7070/kakao/login
+    uri: http://ec2-43-201-98-213.ap-northeast-2.compute.amazonaws.com:7070/login

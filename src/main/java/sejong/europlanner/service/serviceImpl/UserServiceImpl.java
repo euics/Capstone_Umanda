@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.dto.UserDto;
 import sejong.europlanner.entity.UserEntity;
+import sejong.europlanner.exception.BadRequestException;
 import sejong.europlanner.exception.UserNotFoundException;
 import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.UserService;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseUser checkValidation(UserDto userDto) {
         if (!userDto.getPassword().equals(userDto.getPassword1()))
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
 
         UserEntity savedUser = userRepository.findByUsername(userDto.getUsername());
         if (savedUser != null)
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("존재하지 않는 회원입니다.");
 
         if(!passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword()))
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
 
         return new ModelMapper().map(savedUser, ResponseLogin.class);
     }

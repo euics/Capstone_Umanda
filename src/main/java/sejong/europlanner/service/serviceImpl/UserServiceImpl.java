@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.dto.UserDto;
 import sejong.europlanner.entity.UserEntity;
+import sejong.europlanner.exception.UserNotFoundException;
 import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.UserService;
 import sejong.europlanner.vo.response.ResponseLogin;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
         UserEntity savedUser = userRepository.findByUsername(userDto.getUsername());
 
         if(savedUser == null)
-            throw new IllegalStateException("존재하지 않는 회원입니다.");
+            throw new UserNotFoundException("존재하지 않는 회원입니다.");
 
         if(!passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword()))
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");

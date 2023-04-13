@@ -24,7 +24,7 @@ public class KakaoController {
      * 카카오 callback
      * [GET] /oauth/kakao/callback
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<ResponseKakaoUser> kakaoCallback(@RequestParam String code) throws Exception {
         JsonNode userProfile = kakaoService.getUserFromCode(code);
         ResponseKakaoUser responseKakaoUser = kakaoService.setToken(kakaoService.toResponse(userProfile));
@@ -32,7 +32,7 @@ public class KakaoController {
         return ResponseEntity.ok().body(responseKakaoUser);
     }
 
-    @PostMapping("/user")
+    @GetMapping("/user")
     public String kakaoGetUser(@RequestParam String code) throws Exception {
         JsonNode userProfile = kakaoService.getUserFromCode(code);
 

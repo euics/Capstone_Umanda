@@ -15,7 +15,7 @@ public class UserDto {
 
     private String name;
 
-    private Integer birthdate;
+    private String birthdate;
 
     private Gender gender;
 }

@@ -24,7 +24,7 @@ public class UserEntity {
 
     private String name;
 
-    private Integer birthdate;
+    private String birthdate;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

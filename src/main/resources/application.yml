@@ -13,7 +13,7 @@ spring:
 #    password:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/euro?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql:ec2-3-39-229-110.ap-northeast-2.compute.amazonaws.com:8080:3306/euro?serverTimezone=UTC&characterEncoding=UTF-8
     username: "root"
     password: "1234"
     driver-class-name: com.mysql.cj.jdbc.Driver

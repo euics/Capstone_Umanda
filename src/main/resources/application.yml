@@ -13,7 +13,7 @@ spring:
 #    password:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/library?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/europlanner?serverTimezone=UTC&characterEncoding=UTF-8
     username: "root"
     password: "1234"
     driver-class-name: com.mysql.cj.jdbc.Driver

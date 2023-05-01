@@ -52,6 +52,9 @@ dependencies {
 
     // Google
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // Web Socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

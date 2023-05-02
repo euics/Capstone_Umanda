@@ -40,13 +40,13 @@ jobs:
         docker tag $REPO:latest $NAME/$REPO:latest
         docker push $NAME/$REPO:latest
         
-    - name: Setup MySQL
-      uses: samin/mysql-action@v1
-      with:
-        character set server: 'utf8' 
-        mysql database: 'europlanner' 
-        mysql user: 'root'
-        mysql password: ${{ secrets.MYSQL_PASSWORD }} # github Secret 탭에서 설정하세요!
+#     - name: Setup MySQL
+#       uses: samin/mysql-action@v1
+#       with:
+#         character set server: 'utf8' 
+#         mysql database: 'europlanner' 
+#         mysql user: 'root'
+#         mysql password: ${{ secrets.MYSQL_PASSWORD }} # github Secret 탭에서 설정하세요!
         
 #   deploy:
 #     needs: build

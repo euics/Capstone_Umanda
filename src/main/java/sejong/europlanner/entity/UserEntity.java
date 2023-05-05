@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import sejong.europlanner.enumtype.Gender;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,4 +30,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CountryEntity> countryEntityList = new ArrayList<>();
 }

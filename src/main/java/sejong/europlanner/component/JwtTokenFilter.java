@@ -50,9 +50,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-
+        if (token != null) {
             try {
                 Jws<Claims> claimsJws = Jwts.parser()
                         .setSigningKey(jwtSecret)

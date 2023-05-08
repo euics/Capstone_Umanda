@@ -16,6 +16,7 @@ import sejong.europlanner.repository.CommentsRepository;
 import sejong.europlanner.service.serviceinterface.CommentsService;
 import sejong.europlanner.vo.request.comments.RequestCreateComments;
 import sejong.europlanner.vo.request.comments.RequestUpdateComments;
+import sejong.europlanner.vo.response.comments.ResponseDeleteComments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,5 +90,20 @@ public class CommentsServiceImpl implements CommentsService {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return mapper.map(savedNewComments, CommentsDto.class);
+    }
+
+    @Override
+    public ResponseDeleteComments deleteComments(Long commentsId) {
+        Optional<CommentsEntity> savedComments = commentsRepository.findById(commentsId);
+
+        if(savedComments.isEmpty())
+            throw new CommentsNotFoundException("존재하지 않는 댓글입니다.");
+
+        commentsRepository.delete(savedComments.get());
+
+        ResponseDeleteComments responseDeleteComments = new ResponseDeleteComments();
+        responseDeleteComments.setMessage("댓글이 삭제되었습니다.");
+
+        return responseDeleteComments;
     }
 }

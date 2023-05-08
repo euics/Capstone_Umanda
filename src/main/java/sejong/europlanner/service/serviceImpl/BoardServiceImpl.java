@@ -15,6 +15,7 @@ import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.BoardService;
 import sejong.europlanner.vo.request.board.RequestCreateBoard;
 import sejong.europlanner.vo.request.board.RequestUpdateBoard;
+import sejong.europlanner.vo.response.board.ResponseDeleteBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,5 +96,20 @@ public class BoardServiceImpl implements BoardService {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return mapper.map(newSavedBoard, BoardDto.class);
+    }
+
+    @Override
+    public ResponseDeleteBoard deleteBoard(Long boardId) {
+        Optional<BoardEntity> savedBoard = boardRepository.findById(boardId);
+
+        if(savedBoard.isEmpty())
+            throw new BoardNotFoundException("존재하지 않는 게시판입니다.");
+
+        boardRepository.delete(savedBoard.get());
+
+        ResponseDeleteBoard responseDeleteBoard = new ResponseDeleteBoard();
+        responseDeleteBoard.setMessage("게시판이 삭제되었습니다.");
+
+        return responseDeleteBoard;
     }
 }

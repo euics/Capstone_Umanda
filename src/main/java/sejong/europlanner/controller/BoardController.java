@@ -40,6 +40,18 @@ public class BoardController {
         return ResponseEntity.ok().body(responseGetBoardList);
     }
 
+    @GetMapping("/boards/read/{boardId}")
+    public ResponseEntity<ResponseGetBoard> getBoardByBoardId(@PathVariable Long boardId){
+        BoardDto boardDto = boardService.getBoardById(boardId);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        ResponseGetBoard responseGetBoard = mapper.map(boardDto, ResponseGetBoard.class);
+
+        return ResponseEntity.ok().body(responseGetBoard);
+    }
+
     @PostMapping("/boards/create")
     public ResponseEntity<ResponseCreateBoard> createBoard(@RequestBody RequestCreateBoard requestCreateBoard){
         ModelMapper mapper = new ModelMapper();

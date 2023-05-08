@@ -1,5 +1,6 @@
 package sejong.europlanner.controller;
 
+import io.swagger.models.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import sejong.europlanner.service.serviceinterface.BoardService;
 import sejong.europlanner.vo.request.board.RequestCreateBoard;
 import sejong.europlanner.vo.request.board.RequestUpdateBoard;
 import sejong.europlanner.vo.response.board.ResponseCreateBoard;
+import sejong.europlanner.vo.response.board.ResponseDeleteBoard;
 import sejong.europlanner.vo.response.board.ResponseGetBoard;
 
 import java.util.ArrayList;
@@ -76,5 +78,12 @@ public class BoardController {
         ResponseGetBoard responseGetBoard = mapper.map(boardDto, ResponseGetBoard.class);
 
         return ResponseEntity.ok().body(responseGetBoard);
+    }
+
+    @DeleteMapping("/boards/delete/{boardId}")
+    public ResponseEntity<ResponseDeleteBoard> deleteBoard(@PathVariable Long boardId){
+        ResponseDeleteBoard responseDeleteBoard = boardService.deleteBoard(boardId);
+
+        return ResponseEntity.ok().body(responseDeleteBoard);
     }
 }

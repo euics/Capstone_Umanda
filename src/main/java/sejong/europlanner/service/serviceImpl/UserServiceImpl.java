@@ -1,5 +1,7 @@
 package sejong.europlanner.service.serviceImpl;
 
+import io.swagger.models.Model;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,8 +14,11 @@ import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.exception.customexception.UsernameExistException;
 import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.UserService;
+import sejong.europlanner.vo.response.user.ResponseGetUser;
 import sejong.europlanner.vo.response.user.ResponseLogin;
 import sejong.europlanner.vo.response.user.ResponseUser;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -64,5 +69,15 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("비밀번호가 일치하지 않습니다.");
 
         return new ModelMapper().map(savedUser, ResponseLogin.class);
+    }
+
+    @Override
+    public ResponseGetUser getUser(Long userId) {
+        Optional<UserEntity> savedUser = userRepository.findById(userId);
+
+        if(savedUser.isEmpty())
+            throw new UserNotFoundException("존재하지 않는 회원입니다.");
+
+        return new ModelMapper().map(savedUser.get(), ResponseGetUser.class);
     }
 }

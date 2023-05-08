@@ -9,6 +9,7 @@ import sejong.europlanner.dto.CommentsDto;
 import sejong.europlanner.service.serviceinterface.CommentsService;
 import sejong.europlanner.vo.request.comments.RequestCreateComments;
 import sejong.europlanner.vo.request.comments.RequestUpdateComments;
+import sejong.europlanner.vo.response.comments.ResponseDeleteComments;
 import sejong.europlanner.vo.response.comments.ResponseGetComments;
 
 import java.util.ArrayList;
@@ -68,5 +69,12 @@ public class CommentsController {
         responseGetComments.setCommentsId(commentsDto.getId());
 
         return ResponseEntity.ok().body(responseGetComments);
+    }
+
+    @DeleteMapping("/comments/delete/{commentsId}")
+    public ResponseEntity<ResponseDeleteComments> deleteComments(@PathVariable Long commentsId){
+        ResponseDeleteComments responseDeleteComments = commentsService.deleteComments(commentsId);
+
+        return ResponseEntity.ok().body(responseDeleteComments);
     }
 }

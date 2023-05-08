@@ -7,21 +7,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.dto.BoardDto;
 import sejong.europlanner.entity.BoardEntity;
+import sejong.europlanner.entity.UserEntity;
+import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.repository.BoardRepository;
+import sejong.europlanner.repository.UserRepository;
 import sejong.europlanner.service.serviceinterface.BoardService;
+import sejong.europlanner.vo.request.board.RequestCreateBoard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -38,5 +45,22 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return boardDtoList;
+    }
+
+    @Override
+    public BoardDto createBoard(RequestCreateBoard requestCreateBoard) {
+        Optional<UserEntity> savedUser = userRepository.findById(requestCreateBoard.getUserId());
+
+        if(savedUser.isEmpty())
+            throw new UserNotFoundException("존재하지 않는 회원입니다.");
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        BoardDto mappedDto = mapper.map(requestCreateBoard, BoardDto.class);
+        BoardEntity newBoardEntity = BoardEntity.boardEntity(mappedDto, savedUser.get());
+        BoardEntity savedBoardEntity = boardRepository.save(newBoardEntity);
+
+        return new ModelMapper().map(savedBoardEntity, BoardDto.class);
     }
 }

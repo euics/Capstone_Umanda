@@ -64,5 +64,5 @@ kakao:
   redirect:
     uri: http://localhost:7070/kakao/login
 
-#server:
-#  port: 7070
+server:
+  port: 7070

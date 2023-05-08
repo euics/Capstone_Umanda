@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.dto.BoardDto;
 import sejong.europlanner.service.serviceinterface.BoardService;
+import sejong.europlanner.vo.request.board.RequestCreateBoard;
+import sejong.europlanner.vo.response.board.ResponseCreateBoard;
 import sejong.europlanner.vo.response.board.ResponseGetBoard;
 
 import java.util.ArrayList;
@@ -36,5 +38,17 @@ public class BoardController {
         }
 
         return ResponseEntity.ok().body(responseGetBoardList);
+    }
+
+    @PostMapping("/boards/create")
+    public ResponseEntity<ResponseCreateBoard> createBoard(@RequestBody RequestCreateBoard requestCreateBoard){
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        BoardDto boardDto = boardService.createBoard(requestCreateBoard);
+        ResponseCreateBoard responseCreateBoard = mapper.map(boardDto, ResponseCreateBoard.class);
+        responseCreateBoard.setBoardId(boardDto.getId());
+
+        return ResponseEntity.ok().body(responseCreateBoard);
     }
 }

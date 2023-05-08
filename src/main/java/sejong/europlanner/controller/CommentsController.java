@@ -4,12 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.dto.CommentsDto;
 import sejong.europlanner.service.serviceinterface.CommentsService;
+import sejong.europlanner.vo.request.comments.RequestCreateComments;
 import sejong.europlanner.vo.response.comments.ResponseGetComments;
 
 import java.util.ArrayList;
@@ -41,5 +39,19 @@ public class CommentsController {
         }
 
         return ResponseEntity.ok().body(responseGetCommentsList);
+    }
+
+    @PostMapping("/comments/create/{boardId}")
+    public ResponseEntity<ResponseGetComments> createComments(@PathVariable Long boardId,
+                                                              @RequestBody RequestCreateComments requestCreateComments){
+        CommentsDto commentsDto = commentsService.createComments(boardId, requestCreateComments);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        ResponseGetComments responseGetComments = mapper.map(commentsDto, ResponseGetComments.class);
+        responseGetComments.setCommentsId(commentsDto.getId());
+
+        return ResponseEntity.ok().body(responseGetComments);
     }
 }

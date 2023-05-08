@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sejong.europlanner.exception.customexception.BadRequestException;
+import sejong.europlanner.exception.customexception.BoardNotFoundException;
 import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.exception.customexception.UsernameExistException;
 import sejong.europlanner.vo.response.exception.ExceptionResponse;
@@ -47,5 +48,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(BoardNotFoundException.class)
+    public final ResponseEntity<Object> boardNotFoundException(Exception ex, WebRequest request){
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }

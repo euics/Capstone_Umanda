@@ -10,10 +10,12 @@ import sejong.europlanner.entity.BoardEntity;
 import sejong.europlanner.entity.CommentsEntity;
 import sejong.europlanner.entity.UserEntity;
 import sejong.europlanner.exception.customexception.BoardNotFoundException;
+import sejong.europlanner.exception.customexception.CommentsNotFoundException;
 import sejong.europlanner.repository.BoardRepository;
 import sejong.europlanner.repository.CommentsRepository;
 import sejong.europlanner.service.serviceinterface.CommentsService;
 import sejong.europlanner.vo.request.comments.RequestCreateComments;
+import sejong.europlanner.vo.request.comments.RequestUpdateComments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,5 +72,22 @@ public class CommentsServiceImpl implements CommentsService {
         CommentsEntity savedComments = commentsRepository.save(commentsEntity);
 
         return mapper.map(savedComments, CommentsDto.class);
+    }
+
+    @Override
+    public CommentsDto updateComments(Long commentsId, RequestUpdateComments requestUpdateComments) {
+        Optional<CommentsEntity> savedComments = commentsRepository.findById(commentsId);
+
+        if(savedComments.isEmpty())
+            throw new CommentsNotFoundException("존재하지 않는 댓글입니다.");
+
+        savedComments.get().setComments(requestUpdateComments.getComments());
+
+        CommentsEntity savedNewComments = commentsRepository.save(savedComments.get());
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        return mapper.map(savedNewComments, CommentsDto.class);
     }
 }

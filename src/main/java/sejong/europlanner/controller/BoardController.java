@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sejong.europlanner.dto.BoardDto;
 import sejong.europlanner.service.serviceinterface.BoardService;
 import sejong.europlanner.vo.request.board.RequestCreateBoard;
+import sejong.europlanner.vo.request.board.RequestUpdateBoard;
 import sejong.europlanner.vo.response.board.ResponseCreateBoard;
 import sejong.europlanner.vo.response.board.ResponseGetBoard;
 
@@ -62,5 +63,18 @@ public class BoardController {
         responseCreateBoard.setBoardId(boardDto.getId());
 
         return ResponseEntity.ok().body(responseCreateBoard);
+    }
+
+    @PutMapping("/boards/update/{boardId}")
+    public ResponseEntity<ResponseGetBoard> updateBoard(@PathVariable Long boardId,
+                                                        @RequestBody RequestUpdateBoard requestUpdateBoard){
+        requestUpdateBoard.setId(boardId);
+        BoardDto boardDto = boardService.updateBoard(requestUpdateBoard);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ResponseGetBoard responseGetBoard = mapper.map(boardDto, ResponseGetBoard.class);
+
+        return ResponseEntity.ok().body(responseGetBoard);
     }
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseGetBoard {
-    private Long id;
+    private Long boardId;
     private String title;
     private String content;
     private String createdBy;

@@ -37,6 +37,7 @@ public class BoardController {
         List<ResponseGetBoard> responseGetBoardList = new ArrayList<>();
         for(BoardDto bd : boardDtoList){
             ResponseGetBoard mappedResponseGetBoard = mapper.map(bd, ResponseGetBoard.class);
+            mappedResponseGetBoard.setBoardId(bd.getId());
             responseGetBoardList.add(mappedResponseGetBoard);
         }
 
@@ -51,6 +52,7 @@ public class BoardController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         ResponseGetBoard responseGetBoard = mapper.map(boardDto, ResponseGetBoard.class);
+        responseGetBoard.setBoardId(boardId);
 
         return ResponseEntity.ok().body(responseGetBoard);
     }
@@ -76,6 +78,7 @@ public class BoardController {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         ResponseGetBoard responseGetBoard = mapper.map(boardDto, ResponseGetBoard.class);
+        responseGetBoard.setBoardId(boardId);
 
         return ResponseEntity.ok().body(responseGetBoard);
     }

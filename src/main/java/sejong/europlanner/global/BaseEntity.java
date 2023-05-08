@@ -1,5 +1,6 @@
 package sejong.europlanner.global;
 
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -11,7 +12,7 @@ import javax.persistence.MappedSuperclass;
 
 @EntityListeners(value = {AuditingEntityListener.class})
 @MappedSuperclass
-@Getter
+@Data
 public abstract class BaseEntity extends BaseTimeEntity{
     @CreatedBy
     @Column(updatable = false)

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sejong.europlanner.dto.BoardDto;
 import sejong.europlanner.entity.BoardEntity;
 import sejong.europlanner.entity.UserEntity;
+import sejong.europlanner.exception.customexception.BoardNotFoundException;
 import sejong.europlanner.exception.customexception.UserNotFoundException;
 import sejong.europlanner.repository.BoardRepository;
 import sejong.europlanner.repository.UserRepository;
@@ -62,5 +63,18 @@ public class BoardServiceImpl implements BoardService {
         BoardEntity savedBoardEntity = boardRepository.save(newBoardEntity);
 
         return new ModelMapper().map(savedBoardEntity, BoardDto.class);
+    }
+
+    @Override
+    public BoardDto getBoardById(Long boardId) {
+        Optional<BoardEntity> savedBoard = boardRepository.findById(boardId);
+
+        if (savedBoard.isEmpty())
+            throw new BoardNotFoundException("존재하지 않는 게시판입니다.");
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        return mapper.map(savedBoard.get(), BoardDto.class);
     }
 }

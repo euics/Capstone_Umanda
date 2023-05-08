@@ -9,4 +9,6 @@ public interface BoardService {
     List<BoardDto> getBoardList();
 
     BoardDto createBoard(RequestCreateBoard requestCreateBoard);
+
+    BoardDto getBoardById(Long boardId);
 }

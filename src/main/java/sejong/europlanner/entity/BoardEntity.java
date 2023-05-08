@@ -7,6 +7,8 @@ import sejong.europlanner.dto.BoardDto;
 import sejong.europlanner.global.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "board")
@@ -24,6 +26,9 @@ public class BoardEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentsEntity> comments = new ArrayList<>();
 
     public static BoardEntity boardEntity(BoardDto boardDto, UserEntity user) {
         BoardEntity boardEntity = new BoardEntity();

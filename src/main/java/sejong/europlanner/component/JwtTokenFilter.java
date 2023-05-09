@@ -48,9 +48,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
-        if (token != null) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7); // Remove "Bearer " from the header value
+
             try {
                 Jws<Claims> claimsJws = Jwts.parser()
                         .setSigningKey(jwtSecret)
@@ -67,19 +69,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                // JWT 토큰 값을 응답 헤더에 추가합니다 (Bearer 없이).
-                response.setHeader("Authorization", token);
-                filterChain.doFilter(request, response); // 이 부분을 try 블록 안으로 옮깁니다.
-
+                response.setHeader("Authorization", "Bearer " + token); // Add "Bearer " to the header value
+                filterChain.doFilter(request, response);
 
             } catch (JwtException e) {
                 SecurityContextHolder.clearContext();
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 응답 상태를 401로 설정합니다.
-                return; // 필터 체인을 종료하고 다음 필터로 넘어가지 않습니다.
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 응답 상태를 401로 설정합니다.
-            return; // 필터 체인을 종료하고 다음 필터로 넘어가지 않습니다.
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
     }
 }

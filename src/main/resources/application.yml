@@ -40,6 +40,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  webflux:
+    cors:
+      allowed-origins: http://localhost:3000
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+      allowed-headers: Content-Type,Authorization
+
 jwt:
   secret: YOUR_SECRET_KEY
   expiration: 7200000 # 토큰이 만료되기까지의 시간 (밀리초 단위, 여기서는 2시간)
@@ -63,6 +69,7 @@ kakao:
     id: f7db335e160a0711caa399186a502461
   redirect:
     uri: http://localhost:7070/kakao/login
+
 
 #server:
 #  port: 7070

@@ -22,12 +22,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/swagger.ui/**", "/login/**", "/register/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**").permitAll()
+                .antMatchers("/h2-console/**", "/swagger.ui/**", "/login/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**", "/users/**").permitAll()
                 .and()
                 .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

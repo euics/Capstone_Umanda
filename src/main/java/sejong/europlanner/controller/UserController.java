@@ -18,7 +18,7 @@ import sejong.europlanner.vo.response.user.ResponseUser;
 import java.net.URI;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "Authorization")
 public class UserController {
     private final UserService userService;
 
@@ -31,7 +31,7 @@ public class UserController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/users/register")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser requestUser){
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -50,7 +50,7 @@ public class UserController {
         return ResponseEntity.created(location).body(responseUser);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<ResponseLogin> loginUser(@RequestBody RequestLogin requestLogin) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -66,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok().body(responseLogin);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<ResponseGetUser> getUser(@PathVariable Long userId){
         ResponseGetUser user = userService.getUser(userId);
 

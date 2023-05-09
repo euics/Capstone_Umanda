@@ -23,11 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/h2-console/**", "/swagger.ui/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**", "/users/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**").permitAll()
                 .and()
                 .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

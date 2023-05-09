@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/swagger.ui/**", "/users/**").permitAll()
+                .antMatchers("/h2-console/**", "/swagger-ui/**", "/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**").permitAll()

@@ -1,6 +1,7 @@
 package sejong.europlanner.dto;
 
 import lombok.Data;
+import sejong.europlanner.enumtype.Gender;
 
 import java.time.LocalDateTime;
 
@@ -13,4 +14,6 @@ public class BoardDto {
     private String modifiedBy;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+    private String birthDate;
+    private Gender gender;
 }

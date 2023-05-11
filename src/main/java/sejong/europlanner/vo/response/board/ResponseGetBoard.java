@@ -2,6 +2,7 @@ package sejong.europlanner.vo.response.board;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import sejong.europlanner.enumtype.Gender;
 
 import java.time.LocalDateTime;
 
@@ -15,4 +16,6 @@ public class ResponseGetBoard {
     private String modifiedBy;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+    private String birthDate;
+    private Gender gender;
 }

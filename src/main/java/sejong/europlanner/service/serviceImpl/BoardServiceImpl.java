@@ -43,7 +43,10 @@ public class BoardServiceImpl implements BoardService {
 
         List<BoardDto> boardDtoList = new ArrayList<>();
         for(BoardEntity be : boardEntityList){
+            Optional<UserEntity> findUser = userRepository.findById(be.getUser().getId());
             BoardDto mappedDto = mapper.map(be, BoardDto.class);
+            mappedDto.setGender(findUser.get().getGender());
+            mappedDto.setBirthDate(findUser.get().getBirthdate());
             boardDtoList.add(mappedDto);
         }
 
@@ -70,14 +73,18 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto getBoardById(Long boardId) {
         Optional<BoardEntity> savedBoard = boardRepository.findById(boardId);
+        Optional<UserEntity> savedUser = userRepository.findById(savedBoard.get().getUser().getId());
 
         if (savedBoard.isEmpty())
             throw new BoardNotFoundException("존재하지 않는 게시판입니다.");
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        BoardDto mappedDto = mapper.map(savedBoard.get(), BoardDto.class);
+        mappedDto.setBirthDate(savedUser.get().getBirthdate());
+        mappedDto.setGender(savedUser.get().getGender());
 
-        return mapper.map(savedBoard.get(), BoardDto.class);
+        return mappedDto;
     }
 
     @Override

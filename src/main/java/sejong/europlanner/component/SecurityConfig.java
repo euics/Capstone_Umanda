@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtTokenFilter jwtTokenFilter() {
         List<String> permitAllEndpoints = Arrays.asList(
                 "/h2-console/**",
-                "/swagger.ui/**",
+                "/swagger-ui/**",
                 "/users/**"
         );
         return new JwtTokenFilter(jwtSecret, permitAllEndpoints);

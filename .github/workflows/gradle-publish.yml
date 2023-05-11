@@ -56,4 +56,4 @@ jobs:
       - name: Docker run
         run: |
               sudo docker ps -q --filter "name=euro-planner" | grep -q . && sudo docker stop "euro-planner" && sudo docker rmi  "euics/euro-planner"
-              sudo docker run -d --name ci-cd --rm -p 8080:8080 euics/euro-planner
+              sudo docker run -d --name euro-planner --rm -p 8080:8080 euics/euro-planner

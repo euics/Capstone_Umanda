@@ -7,4 +7,5 @@ public class RequestCreateBoard {
     private Long userId;
     private String title;
     private String content;
+    private String departDate;
 }

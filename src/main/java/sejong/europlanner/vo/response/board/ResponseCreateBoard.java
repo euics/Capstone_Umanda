@@ -9,4 +9,5 @@ public class ResponseCreateBoard {
     private Long boardId;
     private String title;
     private String content;
+    private String departDate;
 }

@@ -1,6 +1,7 @@
 package sejong.europlanner.controller;
 
 import io.swagger.models.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "Authorization")
+@Slf4j
 public class BoardController {
     private final BoardService boardService;
 
@@ -59,12 +61,19 @@ public class BoardController {
 
     @PostMapping("/boards/create")
     public ResponseEntity<ResponseCreateBoard> createBoard(@RequestBody RequestCreateBoard requestCreateBoard){
+        log.info("request = {}", requestCreateBoard);
+
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         BoardDto boardDto = boardService.createBoard(requestCreateBoard);
+
+        log.info("boardDto = {}", boardDto);
+
         ResponseCreateBoard responseCreateBoard = mapper.map(boardDto, ResponseCreateBoard.class);
         responseCreateBoard.setBoardId(boardDto.getId());
+
+        log.info("response = {}", responseCreateBoard);
 
         return ResponseEntity.ok().body(responseCreateBoard);
     }

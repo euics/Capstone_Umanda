@@ -23,6 +23,8 @@ public class BoardEntity extends BaseEntity {
     private String title;
     private String content;
 
+    private String departDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -35,6 +37,7 @@ public class BoardEntity extends BaseEntity {
 
         boardEntity.setTitle(boardDto.getTitle());
         boardEntity.setContent(boardDto.getContent());
+        boardEntity.setDepartDate(boardDto.getDepartDate());
         boardEntity.setUser(user);
         boardEntity.setCreatedBy(user.getUsername());
         boardEntity.setModifiedBy(user.getUsername());

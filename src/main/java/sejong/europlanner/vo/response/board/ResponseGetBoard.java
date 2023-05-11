@@ -18,4 +18,5 @@ public class ResponseGetBoard {
     private LocalDateTime updateTime;
     private String birthDate;
     private Gender gender;
+    private String departDate;
 }

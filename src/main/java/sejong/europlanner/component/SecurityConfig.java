@@ -24,11 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**", "/swagger-ui/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**", "/hotel/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**", "/hotel/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**", "/hotel/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**", "/hotel/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**", "/hotel/**").permitAll()
                 .and()
                 .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -1,4 +1,13 @@
+#server:
+#  port: 7070
+
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  messages:
+    basename: messages
+
   h2:
     console:
       enabled: true
@@ -36,10 +45,6 @@ spring:
 #        format_sql: true
 #        dialect: org.hibernate.dialect.MySQL8Dialect
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
   webflux:
     cors:
       allowed-origins: http://localhost:3000
@@ -70,6 +75,6 @@ kakao:
   redirect:
     uri: http://localhost:7070/kakao/login
 
-
-#server:
-#  port: 7070
+amadeus:
+  api_key: U8WYISIFa0dyYIIBWKWaBP7XmQJmbKue
+  api_secret: 998AEJyKQcS3LmVY

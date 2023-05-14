@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelInfoDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
 
@@ -97,11 +98,11 @@ public class AmadeusServiceImpl implements AmadeusService {
         return response.getBody();
     }
 
-    public String getFlightOffers(String originLocationCode,
-                                  String destinationLocationCode,
-                                  String departureDate,
-                                  String adults) {
-        String url = "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=" + originLocationCode
+    public List<FlightOfferDto> getFlightOffers(String originLocationCode,
+                                                String destinationLocationCode,
+                                                String departureDate,
+                                                String adults) {
+        String url = "https://test.api.amadeus.com/v2/shopping/flight-offers?nonStop=true&originLocationCode=" + originLocationCode
                 + "&destinationLocationCode=" + destinationLocationCode + "&departureDate=" + departureDate + "&adults=" + adults;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -112,6 +113,31 @@ public class AmadeusServiceImpl implements AmadeusService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        return response.getBody();
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = objectMapper.readTree(response.getBody());
+
+            List<FlightOfferDto> flightOfferList = new ArrayList<>();
+            for (JsonNode node : root.path("data")) {
+                FlightOfferDto flightOffer = new FlightOfferDto();
+
+                JsonNode itineraries = node.path("itineraries").get(0);
+                JsonNode segments = itineraries.path("segments").get(0); // Assuming there's only one segment
+
+                flightOffer.setDeparture(segments.path("departure").path("iataCode").asText());
+                flightOffer.setArrival(segments.path("arrival").path("iataCode").asText());
+
+                JsonNode price = node.path("price");
+                flightOffer.setCurrency(price.path("currency").asText());
+                flightOffer.setGrandTotal(price.path("grandTotal").asText());
+
+                flightOfferList.add(flightOffer);
+            }
+            return flightOfferList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error while extracting flight offers from Amadeus API response", e);
+        }
     }
 }

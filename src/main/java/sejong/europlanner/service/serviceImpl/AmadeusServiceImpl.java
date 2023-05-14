@@ -11,21 +11,21 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.dto.HotelInfoDto;
-import sejong.europlanner.vo.response.hotel.ResponseHotelInfo;
+import sejong.europlanner.service.serviceinterface.AmadeusService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
-public class AmadeusServiceImpl {
+public class AmadeusServiceImpl implements AmadeusService {
     @Value("${amadeus.api_key}")
     private String apiKey;
 
     @Value("${amadeus.api_secret}")
     private String apiSecret;
 
-    private String getAccessToken() {
+    public String getAccessToken() {
         String url = "https://test.api.amadeus.com/v1/security/oauth2/token";
         RestTemplate restTemplate = new RestTemplate();
 
@@ -82,8 +82,27 @@ public class AmadeusServiceImpl {
         }
     }
 
-    public String getHotelInfo(String hotelIds) {
-        String url = "https://test.api.amadeus.com/v2/e-reputation/hotel-sentiments?hotelIds=" + hotelIds;
+    public String getHotelInfo(List<String> hotelIds) {
+        String hotelIdsString = String.join(",", hotelIds); // convert List<String> to comma-separated String
+        String url = "https://test.api.amadeus.com/v2/e-reputation/hotel-sentiments?hotelIds=" + hotelIdsString;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + getAccessToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return response.getBody();
+    }
+
+    public String getFlightOffers(String originLocationCode,
+                                  String destinationLocationCode,
+                                  String departureDate,
+                                  String adults) {
+        String url = "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=" + originLocationCode
+                + "&destinationLocationCode=" + destinationLocationCode + "&departureDate=" + departureDate + "&adults=" + adults;
 
         RestTemplate restTemplate = new RestTemplate();
 

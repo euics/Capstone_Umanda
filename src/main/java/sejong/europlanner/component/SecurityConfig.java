@@ -20,15 +20,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String[] noAuthList = {"/h2-console/**", "/swagger-ui/**", "/users/**"};
+        String[] allMethodsEndpoints = {"/boards/**", "/comments/**", "/hotel/**", "/airplane/**"};
+
         http
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/swagger-ui/**", "/users/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/boards/**", "/comments/**", "/hotel/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/boards/**", "/comments/**", "/hotel/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/boards/**", "/comments/**", "/hotel/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/boards/**", "/comments/**", "/hotel/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/boards/**", "/comments/**", "/hotel/**").permitAll()
+                .antMatchers(noAuthList).permitAll()
+                .antMatchers(HttpMethod.POST, allMethodsEndpoints).permitAll()
+                .antMatchers(HttpMethod.DELETE, allMethodsEndpoints).permitAll()
+                .antMatchers(HttpMethod.GET, allMethodsEndpoints).permitAll()
+                .antMatchers(HttpMethod.PUT, allMethodsEndpoints).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, allMethodsEndpoints).permitAll()
                 .and()
                 .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

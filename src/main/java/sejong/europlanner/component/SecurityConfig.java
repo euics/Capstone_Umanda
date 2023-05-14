@@ -20,13 +20,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] noAuthList = {"/h2-console/**", "/swagger-ui/**", "/users/**"};
+        String[] noAuthList = {"/h2-console/**", "/users/**"};
         String[] allMethodsEndpoints = {"/boards/**", "/comments/**", "/hotel/**", "/airplane/**"};
+        String[] swaggerList = {
+                "/swagger-resources/**",
+                "/swagger-ui.html",
+                "/v2/api-docs",
+                "/webjars/**"
+        };
 
         http
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers(noAuthList).permitAll()
+                .antMatchers(swaggerList).permitAll()
                 .antMatchers(HttpMethod.POST, allMethodsEndpoints).permitAll()
                 .antMatchers(HttpMethod.DELETE, allMethodsEndpoints).permitAll()
                 .antMatchers(HttpMethod.GET, allMethodsEndpoints).permitAll()
@@ -45,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> permitAllEndpoints = Arrays.asList(
                 "/h2-console/**",
                 "/swagger-ui/**",
-                "/users/**"
+                "/users/**",
+                "/swagger-ui.html"
         );
         return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }

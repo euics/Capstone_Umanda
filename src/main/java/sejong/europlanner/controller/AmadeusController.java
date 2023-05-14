@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sejong.europlanner.dto.HotelInfoDto;
-import sejong.europlanner.service.serviceImpl.AmadeusServiceImpl;
+import sejong.europlanner.service.serviceinterface.AmadeusService;
 import sejong.europlanner.vo.response.hotel.ResponseHotelInfo;
 
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "Authorization")
 public class AmadeusController {
-    private final AmadeusServiceImpl amadeusService;
+    private final AmadeusService amadeusService;
 
     @Autowired
-    public AmadeusController(AmadeusServiceImpl amadeusService) {
+    public AmadeusController(AmadeusService amadeusService) {
         this.amadeusService = amadeusService;
     }
 

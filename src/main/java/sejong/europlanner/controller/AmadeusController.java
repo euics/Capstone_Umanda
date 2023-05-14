@@ -18,9 +18,12 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "Authorization")
 public class AmadeusController {
-    @Autowired
-    private AmadeusServiceImpl amadeusService;
+    private final AmadeusServiceImpl amadeusService;
 
+    @Autowired
+    public AmadeusController(AmadeusServiceImpl amadeusService) {
+        this.amadeusService = amadeusService;
+    }
 
     @GetMapping("/hotel/list")
     public ResponseEntity<List<ResponseHotelInfo>> getHotelList(@RequestParam String cityCode) {
@@ -39,8 +42,17 @@ public class AmadeusController {
     }
 
     @GetMapping("/hotel/info")
-    public ResponseEntity<String> getHotelInfo(@RequestParam String hotelIds) {
+    public ResponseEntity<String> getHotelInfo(@RequestParam List<String> hotelIds) {
         String hotelList = amadeusService.getHotelInfo(hotelIds);
         return ResponseEntity.ok(hotelList);
+    }
+
+    @GetMapping("/airplane/info")
+    public ResponseEntity<String> getFlightOffers(@RequestParam("originLocationCode") String originLocationCode,
+                                                  @RequestParam("destinationLocationCode") String destinationLocationCode,
+                                                  @RequestParam("departureDate") String departureDate,
+                                                  @RequestParam("adults") String adults) {
+        String flightOffers = amadeusService.getFlightOffers(originLocationCode, destinationLocationCode, departureDate, adults);
+        return ResponseEntity.ok(flightOffers);
     }
 }

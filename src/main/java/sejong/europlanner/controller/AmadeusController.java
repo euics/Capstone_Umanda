@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelInfoDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
+import sejong.europlanner.vo.response.amadues.ResponseFlightOffer;
 import sejong.europlanner.vo.response.hotel.ResponseHotelInfo;
 
 import java.util.ArrayList;
@@ -48,11 +50,21 @@ public class AmadeusController {
     }
 
     @GetMapping("/airplane/info")
-    public ResponseEntity<String> getFlightOffers(@RequestParam("originLocationCode") String originLocationCode,
-                                                  @RequestParam("destinationLocationCode") String destinationLocationCode,
-                                                  @RequestParam("departureDate") String departureDate,
-                                                  @RequestParam("adults") String adults) {
-        String flightOffers = amadeusService.getFlightOffers(originLocationCode, destinationLocationCode, departureDate, adults);
-        return ResponseEntity.ok(flightOffers);
+    public ResponseEntity<List<ResponseFlightOffer>> getFlightOffers(@RequestParam String originLocationCode,
+                                                  @RequestParam String destinationLocationCode,
+                                                  @RequestParam String departureDate,
+                                                  @RequestParam String adults) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        List<ResponseFlightOffer> responseFlightOfferList = new ArrayList<>();
+        List<FlightOfferDto> flightOffers = amadeusService.getFlightOffers(originLocationCode, destinationLocationCode, departureDate, adults);
+
+        for(FlightOfferDto fod : flightOffers){
+            ResponseFlightOffer mappedResponse = mapper.map(fod, ResponseFlightOffer.class);
+            responseFlightOfferList.add(mappedResponse);
+        }
+
+        return ResponseEntity.ok(responseFlightOfferList);
     }
 }

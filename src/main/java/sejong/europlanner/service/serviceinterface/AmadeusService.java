@@ -2,6 +2,7 @@ package sejong.europlanner.service.serviceinterface;
 
 import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelListDto;
+import sejong.europlanner.dto.HotelRateDto;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface AmadeusService {
 
     List<HotelListDto> getHotelList(String cityCode);
 
-    String getHotelInfo(List<String> hotelIds);
+    List<HotelRateDto> getHotelRate(List<String> hotelIds);
 
     List<FlightOfferDto> getFlightOffers(String originLocationCode,
                                          String destinationLocationCode,

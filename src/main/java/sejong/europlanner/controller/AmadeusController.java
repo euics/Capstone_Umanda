@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelListDto;
+import sejong.europlanner.dto.HotelRateDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
 import sejong.europlanner.vo.response.amadues.ResponseFlightOffer;
 import sejong.europlanner.vo.response.amadues.ResponseHotelList;
+import sejong.europlanner.vo.response.amadues.ResponseHotelRate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +45,20 @@ public class AmadeusController {
         return ResponseEntity.ok(responseHotelInfoList);
     }
 
-    @GetMapping("/hotel/info")
-    public ResponseEntity<String> getHotelInfo(@RequestParam List<String> hotelIds) {
-        String hotelList = amadeusService.getHotelInfo(hotelIds);
-        return ResponseEntity.ok(hotelList);
+    @GetMapping("/hotel/rate")
+    public ResponseEntity<List<ResponseHotelRate>> getHotelInfo(@RequestParam List<String> hotelIds) {
+        List<HotelRateDto> hotelRateDtoList = amadeusService.getHotelRate(hotelIds);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        List<ResponseHotelRate> responseHotelRateList = new ArrayList<>();
+        for(HotelRateDto hrd : hotelRateDtoList){
+            ResponseHotelRate mappedResponse = mapper.map(hrd, ResponseHotelRate.class);
+            responseHotelRateList.add(mappedResponse);
+        }
+
+        return ResponseEntity.ok(responseHotelRateList);
     }
 
     @GetMapping("/airplane/info")

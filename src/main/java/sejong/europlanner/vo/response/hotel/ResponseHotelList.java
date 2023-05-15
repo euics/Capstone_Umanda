@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseHotelInfo {
+public class ResponseHotelList {
     private String name;
     private String hotelId;
     private double latitude;

@@ -11,7 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.dto.FlightOfferDto;
-import sejong.europlanner.dto.HotelInfoDto;
+import sejong.europlanner.dto.HotelListDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class AmadeusServiceImpl implements AmadeusService {
         }
     }
 
-    public List<HotelInfoDto> getHotelList(String cityCode) {
+    public List<HotelListDto> getHotelList(String cityCode) {
         String url = "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city?cityCode=" + cityCode;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -68,9 +68,9 @@ public class AmadeusServiceImpl implements AmadeusService {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(response.getBody());
 
-            List<HotelInfoDto> hotelInfoList = new ArrayList<>();
+            List<HotelListDto> hotelInfoList = new ArrayList<>();
             for (JsonNode node : root.path("data")) {
-                HotelInfoDto hotelInfo = new HotelInfoDto();
+                HotelListDto hotelInfo = new HotelListDto();
                 hotelInfo.setName(node.get("name").asText());
                 hotelInfo.setHotelId(node.get("hotelId").asText());
                 hotelInfo.setLatitude(node.get("geoCode").get("latitude").asDouble());

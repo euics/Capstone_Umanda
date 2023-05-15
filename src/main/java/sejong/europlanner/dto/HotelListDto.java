@@ -3,7 +3,7 @@ package sejong.europlanner.dto;
 import lombok.Data;
 
 @Data
-public class HotelInfoDto {
+public class HotelListDto {
     private String name;
     private String hotelId;
     private double latitude;

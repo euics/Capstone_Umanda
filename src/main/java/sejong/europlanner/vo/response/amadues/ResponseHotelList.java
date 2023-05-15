@@ -1,4 +1,4 @@
-package sejong.europlanner.vo.response.hotel;
+package sejong.europlanner.vo.response.amadues;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

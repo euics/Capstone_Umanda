@@ -12,7 +12,7 @@ import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelListDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
 import sejong.europlanner.vo.response.amadues.ResponseFlightOffer;
-import sejong.europlanner.vo.response.hotel.ResponseHotelList;
+import sejong.europlanner.vo.response.amadues.ResponseHotelList;
 
 import java.util.ArrayList;
 import java.util.List;

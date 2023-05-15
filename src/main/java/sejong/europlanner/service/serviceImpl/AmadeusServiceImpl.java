@@ -12,10 +12,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sejong.europlanner.dto.FlightOfferDto;
 import sejong.europlanner.dto.HotelListDto;
+import sejong.europlanner.dto.HotelRateDto;
 import sejong.europlanner.service.serviceinterface.AmadeusService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -83,8 +83,8 @@ public class AmadeusServiceImpl implements AmadeusService {
         }
     }
 
-    public String getHotelInfo(List<String> hotelIds) {
-        String hotelIdsString = String.join(",", hotelIds); // convert List<String> to comma-separated String
+    public List<HotelRateDto> getHotelRate(List<String> hotelIds) {
+        String hotelIdsString = String.join(",", hotelIds);
         String url = "https://test.api.amadeus.com/v2/e-reputation/hotel-sentiments?hotelIds=" + hotelIdsString;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -94,8 +94,38 @@ public class AmadeusServiceImpl implements AmadeusService {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        return response.getBody();
+        ResponseEntity<JsonNode> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                JsonNode.class
+        );
+
+        JsonNode responseBody = response.getBody();
+        assert responseBody != null;
+        JsonNode data = responseBody.get("data");
+
+        List<HotelRateDto> hotelRates = new ArrayList<>();
+
+        for (JsonNode node : data) {
+            String hotelId = node.get("hotelId").asText();
+            int numberOfRatings = node.get("numberOfRatings").asInt();
+            int overallRating = node.get("overallRating").asInt();
+
+            JsonNode sentimentsNode = node.get("sentiments");
+            Map<String, Integer> sentiments = new HashMap<>();
+
+            Iterator<Map.Entry<String, JsonNode>> fields = sentimentsNode.fields();
+
+            while(fields.hasNext()){
+                Map.Entry<String, JsonNode> field = fields.next();
+                sentiments.put(field.getKey(), field.getValue().asInt());
+            }
+
+            hotelRates.add(new HotelRateDto(numberOfRatings, hotelId, overallRating, sentiments));
+        }
+
+        return hotelRates;
     }
 
     public List<FlightOfferDto> getFlightOffers(String originLocationCode,

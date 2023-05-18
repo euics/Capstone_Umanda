@@ -55,7 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/users/**",
                 "/swagger-ui.html",
                 "/country",
-                "/getURI"
+                "/getURI",
+                "/restaurant"
         );
         return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }

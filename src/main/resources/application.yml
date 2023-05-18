@@ -8,18 +8,18 @@ spring:
   messages:
     basename: messages
 
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
-#      settings:
-#        web-allow-others: true
-#
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:testdb
-#    username: sa
-#    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
 
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/europlanner?serverTimezone=UTC&characterEncoding=UTF-8
@@ -45,13 +45,13 @@ spring:
 #        format_sql: true
 #        dialect: org.hibernate.dialect.MySQL8Dialect
 
-  datasource:
-    url: jdbc:mysql://eurplanner-db.cmxg0krf2bnu.ap-northeast-2.rds.amazonaws.com:3306/europlanner
-    username: admin
-    password: pdk99733#
-  jpa:
-    hibernate:
-      ddl-auto: update
+#  datasource:
+#    url: jdbc:mysql://eurplanner-db.cmxg0krf2bnu.ap-northeast-2.rds.amazonaws.com:3306/europlanner
+#    username: admin
+#    password: pdk99733#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
 
   webflux:
     cors:

@@ -53,7 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/h2-console/**",
                 "/swagger-ui/**",
                 "/users/**",
-                "/swagger-ui.html"
+                "/swagger-ui.html",
+                "/country",
+                "/getURI"
         );
         return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }

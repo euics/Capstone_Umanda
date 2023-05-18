@@ -39,6 +39,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        // Filter가 적용되고 있는 uri 추출
+        String method = request.getMethod();
+
+        // pre-flight 요청일 때, 해당 Filter 건너뜀.
+        if (method.equals("OPTIONS")) {
+            return;
+        }
+
         // Check if the request matches any permitAll endpoint
         boolean isPermitAllEndpoint = permitAllRequestMatchers.stream()
                 .anyMatch(matcher -> matcher.matches(request));

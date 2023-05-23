@@ -39,3 +39,4 @@ out/
 # Project exclude pahts
 /.gradle/
 application-oauth.yml
+application.yml

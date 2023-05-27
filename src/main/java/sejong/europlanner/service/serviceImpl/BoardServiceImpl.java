@@ -34,6 +34,7 @@ public class BoardServiceImpl implements BoardService {
         this.userRepository = userRepository;
     }
 
+
     @Override
     public List<BoardDto> getBoardList() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();

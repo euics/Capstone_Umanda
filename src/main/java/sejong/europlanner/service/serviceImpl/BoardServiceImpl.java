@@ -42,9 +42,9 @@ public class BoardServiceImpl implements BoardService {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         List<BoardDto> boardDtoList = new ArrayList<>();
-        for(BoardEntity be : boardEntityList){
-            Optional<UserEntity> findUser = userRepository.findById(be.getUser().getId());
-            BoardDto mappedDto = mapper.map(be, BoardDto.class);
+        for(BoardEntity beE : boardEntityList){
+            Optional<UserEntity> findUser = userRepository.findById(beE.getUser().getId());
+            BoardDto mappedDto = mapper.map(beE, BoardDto.class);
             mappedDto.setGender(findUser.get().getGender());
             mappedDto.setBirthDate(findUser.get().getBirthdate());
             boardDtoList.add(mappedDto);

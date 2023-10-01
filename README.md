@@ -51,7 +51,7 @@ https://github.com/euics/euro-planner-ai-model
 - AWS EC2
 - Swagger2
 - JwtToken
-- Gson
+- Json
 
 ##### Build Tool
 - Gradle
